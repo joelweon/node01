@@ -25,7 +25,7 @@ var httpServer = http.createServer(function(request, response) {
 	if (urlInfo.pathname == '/board/list.do') {
 		// 게시물 목록을 가져온 후에 클라이언트에게 응답한다.
 		connection.query(
-		  'select bno, title, views, cre_dt from board', 
+		  'select bdno, titl, conts from board', 
 		  function(err, rows, fields) { 
 			  if (err) throw err;
 			  response.write("<!DOCTYPE html>\n");
@@ -39,17 +39,16 @@ var httpServer = http.createServer(function(request, response) {
 				
 			  response.write("<table>\n");
 			  response.write("<tr>\n");
-			  response.write("	<th>번호</th><th>제목</th><th>조회수</th><th>작성일</th>\n");
+			  response.write("	<th>번호</th><th>제목</th><th>내용</th>\n");
 			  response.write("</tr>\n");
 			  
 			  for (var i = 0; i < rows.length; i++) {
 				  response.write("<tr>\n");
-				  response.write("  <td>" + rows[i].bno + "</td>\n");
+				  response.write("  <td>" + rows[i].bdno + "</td>\n");
 				  response.write("  <td><a href='detail.do?no=" 
-						  + rows[i].bno + "'>" 
-						  + rows[i].title + "</a></td>\n");
-				  response.write("  <td>" + rows[i].views + "</td>\n");
-				  response.write("  <td>" + dateFormat(rows[i].cre_dt,"yyyy-mm-dd") + "</td>\n");
+						  + rows[i].bdno + "'>" 
+						  + rows[i].titl + "</a></td>\n");
+				  response.write("  <td>" + rows[i].conts + "</td>\n");
 				  response.write("</tr>\n");
 			  }
 			  
@@ -60,8 +59,8 @@ var httpServer = http.createServer(function(request, response) {
 		});
 	} else if (urlInfo.pathname == "/board/detail.do") {
 		connection.query(
-		  'select bno, title, content, views, cre_dt ' 
-				+ ' from board where bno=' + urlInfo.query.no, 
+		  'select bdno, titl, conts' 
+				+ ' from board where bdno=' + urlInfo.query.no, 
 		  function(err, rows, fields) { 
 			  if (err) throw err;
 			  response.write("<!DOCTYPE html>\n");
@@ -77,26 +76,17 @@ var httpServer = http.createServer(function(request, response) {
 			  response.write("<tr>\n");
 			  response.write("  <th>번호</th>\n");
 			  response.write("  <td><input type='text' name='no' value='"
-					  + rows[0].bno + "'></td>\n");
+					  + rows[0].bdno + "'></td>\n");
 			  response.write("</tr>\n");
 			  response.write("<tr>\n");
 			  response.write("  <th>제목</th>\n");
 			  response.write("  <td><input type='text' name='no' value='"
-					  + rows[0].title + "'></td>\n");
+					  + rows[0].titl + "'></td>\n");
 			  response.write("</tr>\n");
 			  response.write("<tr>\n");
 			  response.write("  <th>내용</th>\n");
 			  response.write("  <td><textarea rows='5' cols='50'>" 
-					  + rows[0].content + "</textarea></td>\n");
-			  response.write("</tr>\n");
-			  response.write("<tr>\n");
-			  response.write("  <th>조회수</th>\n");
-			  response.write("  <td>" + rows[0].views + "</td>\n");
-			  response.write("</tr>\n");
-			  response.write("<tr>\n");
-			  response.write(" <th>등록일</th>\n");
-			  response.write("  <td>"
-					  + dateFormat(rows[0].cre_dt,"yyyy-mm-dd") + "</td>\n");
+					  + rows[0].conts + "</textarea></td>\n");
 			  response.write("</tr>\n");
 			  
 			  response.write("</table>");

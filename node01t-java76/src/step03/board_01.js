@@ -7,19 +7,19 @@ var url = require('url');
 //1) DB 커넥션 준비 
 var connection = mysql.createConnection({
   host     : 'localhost',
-  user     : 'java76',
+  user     : 'java89',
   password : '1111',
-  database : 'java76db'
+  database : 'java89db'
 });
 
 connection.connect();
 
 // 2) HTTP 서버 준비
 var httpServer = http.createServer(function(request, response) {
-	var urlInfo = url.parse(request.url, true);
-	response.writeHead(200, {
-		'Content-Type' : 'text/html;charset=UTF-8' 
-	});
+  var urlInfo = url.parse(request.url, true);
+  response.writeHead(200, {
+    'Content-Type' : 'text/html;charset=UTF-8'
+  });
 	
 	if (urlInfo.pathname == '/board/list.do') {
 		response.write("<!DOCTYPE html>\n");
@@ -33,20 +33,19 @@ var httpServer = http.createServer(function(request, response) {
 	
 		// 게시물 목록 가져오기
 		connection.query(
-		  'select bno, title, views, cre_dt from board', 
+		  'select bdno, titl, conts from board', 
 		  function(err, rows, fields) { // 서버에서 결과를 받았을 때 호출되는 함수
 			  if (err) throw err;
 			  response.write("<table>\n");
 			  response.write("<tr>\n");
-			  response.write("	<th>번호</th><th>제목</th><th>조회수</th><th>작성일</th>\n");
+			  response.write("	<th>번호</th><th>제목</th><th>내용</th>\n");
 			  response.write("</tr>\n");
 			  
 			  for (var i = 0; i < rows.length; i++) {
 				  response.write("<tr>\n");
-				  response.write("  <td>" + rows[i].bno + "</td>\n");
-				  response.write("  <td>" + rows[i].title + "</td>\n");
-				  response.write("  <td>" + rows[i].views + "</td>\n");
-				  response.write("  <td>" + rows[i].cre_dt + "</td>\n");
+				  response.write("  <td>" + rows[i].bdno + "</td>\n");
+				  response.write("  <td>" + rows[i].titl + "</td>\n");
+				  response.write("  <td>" + rows[i].conts + "</td>\n");
 				  response.write("</tr>\n");
 			  }
 			  
@@ -57,7 +56,7 @@ var httpServer = http.createServer(function(request, response) {
 		response.write("</html>\n");
 	}
 	
-	response.end();
+	/*response.end();  에러........*/
 });
 
 // 3) HTTP 서버 가동

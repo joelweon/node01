@@ -13,7 +13,7 @@ console.log("연결 되었음.");
 
 connection.query(
   'insert into memb(name,tel,email,pwd) values(?,?,?,password(?))', 
-  ['나는이름', '1111-2222', 'leer@test.com', '1111'],// in-param에 들어갈 값을 배열에 담는다.
+  ['나', '1111-2222', 'naa@test.com', '1111'],// in-param에 들어갈 값을 배열에 담는다.
   function(err, rows, fields) {
     if (err) throw err;
     
